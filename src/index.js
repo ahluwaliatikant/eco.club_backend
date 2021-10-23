@@ -26,6 +26,8 @@ app.get('/getcarbonfootprint', (req, res) => {
     item = req.query.item
     items = item.split(',')
     console.log(items)
+    results = []
+
     for (i in items) {
         item = items[i]
         if (item == "")
@@ -43,21 +45,42 @@ app.get('/getcarbonfootprint', (req, res) => {
     
         if (x1) {
             itemFound = x1[0][1]
-            res.json({item: fashion[itemFound], 'category': 'fashion', 'status': 200})
-            return
+            itemProb = x1[0][0]
+            results.push({item: fashion[itemFound], 'category': 'fashion', 'status': 200, 'prob': itemProb, 'itemName': itemFound})
+            // res.json({item: fashion[itemFound], 'category': 'fashion', 'status': 200})
+            // return
         }
     
         if (x2) {
             itemFound = x2[0][1]
-            res.json({item: food[itemFound], 'category': 'food', 'status': 200})
-            return
+            itemProb = x2[0][0]
+            results.push({item: food[itemFound], 'category': 'food', 'status': 200, 'prob': itemProb, 'itemName': itemFound})
+            // res.json({item: food[itemFound], 'category': 'food', 'status': 200})
+            // return
         }
     
         if (x3) {
             itemFound = x3[0][1]
-            res.json({item: transport[itemFound], 'category': 'transport', 'status': 200})
-            return
+            itemProb = x3[0][0]
+            results.push({item: transport[itemFound], 'category': 'transport', 'status': 200, 'prob': itemProb, 'itemName': itemFound})
+            // res.json({item: transport[itemFound], 'category': 'transport', 'status': 200})
+            // return
         }           
+    }
+
+    maxProb = -1
+    mostProbRes = null
+    for (i in results) {
+        result = results[i]
+        if (result['prob'] > maxProb) {
+            mostProbRes = result
+            maxProb = result['prob']
+        }
+    }
+
+    if (mostProbRes != null) {
+        res.json(mostProbRes)
+        return
     }
 
     res.json({item: 'NOT_FOUND', 'status': 400})
