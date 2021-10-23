@@ -14,8 +14,8 @@ const FuzzySet = require('fuzzyset')
 
 const app = express()
 app.use(bodyParser.json())
-// const port = process.env.PORT || 4000
-const port = 5500
+const port = process.env.PORT || 4000
+// const port = 5500
 
 app.get('/test-page', (req, res) => {
     console.log('testing')
